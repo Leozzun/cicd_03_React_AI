@@ -1,0 +1,20 @@
+
+
+services:
+  backend:
+    build: ./backend
+    container_name: vibe-backend
+    restart: always
+    env_file:
+      - ./backend/.env
+    # MySQL이 별도 컨테이너라면 같은 네트워크를 쓰거나 호스트 IP를 사용해야 합니다.
+    # 여기서는 DB가 이미 EC2에 떠있다고 가정하므로 .env의 DB_HOST 설정을 따릅니다.
+
+  frontend:
+    build: .
+    container_name: vibe-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: always
